@@ -1,0 +1,13 @@
+wayland
+sway
+i3
+i3-gaps
+qutebrowser
+git
+nvim
+
+vimiv
+
+font:
+{pacman : [adobe-source-pro-fonts, grim, brightnessctl, pulseaudio]}
+{yay: [wl-color-picker]}

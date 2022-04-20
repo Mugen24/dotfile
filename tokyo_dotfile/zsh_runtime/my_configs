@@ -1,0 +1,3 @@
+alias rq="vim ~/tokyo_dotfile/requirement.txt"
+alias zrc="vim ~/tokyo_dotfile/zsh_runtime/my_configs"
+alias src="vim ~/tokyo_dotfile/sway_runtime/my_configs"
