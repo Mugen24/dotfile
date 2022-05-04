@@ -1,0 +1,6 @@
+curl
+git
+openssh
+neovim
+qutebrowser
+zsh
