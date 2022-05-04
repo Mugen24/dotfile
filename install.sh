@@ -26,6 +26,12 @@ fi
 if [[ -f $s_config ]]
 then
     echo -e "\ninclude $file_path/sway/my_configs" >> $s_config
+    #Enable brightness bar(wob)
+    cp contrib/systemd/wob.{service,socket} ~/.local/share/systemd/user/
+systemctl daemon-reload --user
+
+    systemctl enable --now --user wob.socket
+
 else
     cp $file_path/sway/.default_sway.conf $s_config
 fi
