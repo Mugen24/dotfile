@@ -43,3 +43,5 @@ else
         echo "Please install zsh"
     fi
 fi
+
+#qute-browser

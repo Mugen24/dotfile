@@ -49,8 +49,8 @@ client.focused $white $white $white $light_gray $light_gray
 client.focused_inactive $purple $purple $purple $gray $gray
 
 smart_gaps on
-gaps inner 10
-gaps outer 7
+gaps inner 5
+gaps outer 3
 
 #Background
 #exec_always swaybg -i ~/tokyo_dotfile/wallpapers/tokyo_areial.jpg
