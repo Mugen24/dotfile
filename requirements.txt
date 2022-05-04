@@ -6,3 +6,6 @@ qutebrowser
 zsh
 wob
 brightnessctl
+pipewire
+pavucontrol
+pulseaudio

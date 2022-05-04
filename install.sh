@@ -9,6 +9,7 @@ for p in $(cat $file_path/requirements.txt)
 do
     echo cum >/dev/null
     #sudo pacman -S --needed $p
+    reboot
 done
 
 #vimrc
