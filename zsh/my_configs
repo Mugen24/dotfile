@@ -1,8 +1,10 @@
+#!/bin/bash
 file_path=$(dirname $(realpath $0))
 plugin_dir=$file_path/plugins
 plugin_dir2=$HOME/.oh-my-zsh/plugins
 
 export ZSH_CUSTOM=$file_path
+export PATH=$HOME/.local/bin:$PATH
 
 plugins=(zsh-vi-mode)
 
