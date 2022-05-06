@@ -1,0 +1,5 @@
+#fc-cache -f -v : reset system to check for new font
+#run fc-list : family to list fonts that we have
+font:
+  normal:
+    family: Source Code Pro Medium

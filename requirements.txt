@@ -9,3 +9,12 @@ brightnessctl
 pipewire
 pavucontrol
 pulseaudio
+youtube-dl
+mpv
+socat
+autotiling
+ranger
+waybar
+nerd-fonts-complete
+dunst
+notify-send

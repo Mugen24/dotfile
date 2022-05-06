@@ -1,14 +1,18 @@
+set $theme tokyo_dotfile
+
+
 set $mod Mod4
 #for_window [app_id=".*"] split toggle
 #default_orientation vertical
 bindsym $mod+Shift+r reload; source ~/.zshrc
 
 exec_always --no-startup-id autotiling
+seat seat0 hide_cursor 3000
 
 bindsym Control+j focus down
 bindsym Control+k focus up
 bindsym Control+h focus left
-bindsym COntrol+l focus right
+bindsym Control+l focus right
 
 font pango:SourceCodePro Medium 10
 
@@ -54,7 +58,8 @@ gaps outer 3
 
 #Background
 #exec_always swaybg -i ~/tokyo_dotfile/wallpapers/tokyo_areial.jpg
-#output "*" bg ../wallpapers/tokyo_areial.jpg fill
+output "*" bg ../$theme/wallpapers/tokyo_areial.jpg fill
+
 
 #-------------------------Plugin------------------------
 set $WOBSOCK $XDG_RUNTIME_DIR/wob.sock
