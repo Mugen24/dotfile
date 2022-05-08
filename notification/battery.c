@@ -99,7 +99,7 @@ void notify(char *text){
     system("systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK");
     //char notify[] = "notify-send";
     //putenv("DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket");
-    char notify[] = "notify-send";
+    char notify[] = "notify-send -t 2000";
     char *notify_string = malloc(sizeof(char) * (strlen(notify) + strlen(text) + 1 + 1));
     notify_string[0] = 0;
     strcat(notify_string, notify);
@@ -110,21 +110,33 @@ void notify(char *text){
     free(notify_string);
 }
 
-void handler(){
-    write(1, "Shutting down battery notification", 45);
-}
 
 int main(){
-    signal(SIGINT, handler);
     Battery_stat my_battery = init_battery();
+    //for converting int to str
     char str[5];
+
+    reload_battery(my_battery);
+    char status[20];
+    strcpy(status, my_battery->status);
+    int level = my_battery->battery_level;
+
     while(1){
         reload_battery(my_battery);
-        int length = snprintf(NULL, 0, "%d", my_battery->battery_level);
-        snprintf( str, length + 1 , "%d", my_battery->battery_level);
-        notify(my_battery->status);
-        notify(str);
-        sleep(10);
+        if (my_battery->battery_level < 10){
+
+        }
+        else if (strcmp(my_battery->status, status) != 0){
+            int length = snprintf(NULL, 0, "%d", my_battery->battery_level);
+            snprintf( str, length + 1 , "%d", my_battery->battery_level);
+
+            notify(my_battery->status);
+            notify(str);
+            strcpy(status, my_battery->status);
+            level = my_battery->battery_level;
+        }
+
+        sleep(1);
     }
     free_bat(my_battery);
     

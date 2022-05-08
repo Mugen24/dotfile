@@ -2,5 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 void main(){
-    eval("echo hello");
+    char *a = "whatr";
+    char *b = a;
+    printf("%p\n", a);
+    printf("%p\n", b);
 }
