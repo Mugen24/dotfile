@@ -12,7 +12,6 @@
 
 # Change the argument to True to still load settings configured via autoconfig.yml
 config.load_autoconfig(False)
-
 # Which cookies to accept. With QtWebEngine, this setting also controls
 # other features with tracking capabilities similar to those of cookies;
 # including IndexedDB, DOM storage, filesystem API, service workers, and
@@ -152,7 +151,7 @@ config.bind('<Space>', 'set-cmd-text /', mode = 'normal')
 config.bind('p', 'open -- {clipboard}', mode = 'normal')
 config.bind('P', 'open --bg {clipboard}', mode = 'normal')
 #conflict with sway window focus
-#config.bind('<Control+h>', 'history -t', mode = 'normal')
+config.unbind('<Control+h>', mode = 'normal')
 config.bind('h', 'history -t', mode = mode)
 config.bind('H', 'back', mode = mode)
 config.bind('L', 'forward', mode = mode)

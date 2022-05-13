@@ -9,10 +9,20 @@ bindsym $mod+Shift+r reload; source ~/.zshrc
 exec_always --no-startup-id autotiling
 seat seat0 hide_cursor 3000
 
-bindsym Control+j focus down
-bindsym Control+k focus up
-bindsym Control+h focus left
-bindsym Control+l focus right
+#bindsym Control+j focus down
+#bindsym Control+k focus up
+#bindsym Control+h focus left
+#bindsym Control+l focus right
+#bindsym Control+h exec "python ~/dotfile/sway/nvim_sway_nav.py left"
+#bindsym Control+j exec "python ~/dotfile/sway/nvim_sway_nav.py down"
+#bindsym Control+k exec "python ~/dotfile/sway/nvim_sway_nav.py up"
+#bindsym Control+l exec "python ~/dotfile/sway/nvim_sway_nav.py right"
+bindsym Control+h exec "sway_focus left"
+bindsym Control+j exec "sway_focus down"
+bindsym Control+k exec "sway_focus up"
+bindsym Control+l exec "sway_focus right"
+unbindsym $mod+d
+bindsym $mod+d exec "wofi --show drun"
 
 font pango:SourceCodePro Medium 10
 
@@ -66,3 +76,5 @@ set $WOBSOCK $XDG_RUNTIME_DIR/wob.sock
 exec rm -f $WOBSOCK && mkfifo $WOBSOCK && tail -f $WOBSOCK | wob
 
 exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+
+exec_always --no-startup-id $HOME/dotfile/sway/test

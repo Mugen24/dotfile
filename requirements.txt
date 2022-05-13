@@ -18,3 +18,4 @@ waybar
 nerd-fonts-complete
 dunst
 notify-send
+wofi

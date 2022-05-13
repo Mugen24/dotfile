@@ -40,4 +40,7 @@ echo $(git remote -v | cut -d':' -f 2)
 alias ggpull='git pull origin $(current_branch)'
 alias ggpush='git push origin $(current_branch)'
 alias ggpnp='git pull origin $(current_branch) && git push origin $(current_branch)'
-alias leak_check='valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose'
+alias leak='valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt'
+alias dbcom='gcc -o a.out -std=c11 -Wall -ggdb3'
+
+alias td="cd ~/dotfile"

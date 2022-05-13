@@ -2,8 +2,5 @@
 #include <stdlib.h>
 #include <string.h>
 void main(){
-    char *a = "whatr";
-    char *b = a;
-    printf("%p\n", a);
-    printf("%p\n", b);
+    printf("%s\n", __STDC_VERSION__);
 }

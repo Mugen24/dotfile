@@ -1,6 +1,7 @@
 #define _XOPEN_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include <string.h>
 #include <signal.h>
 #include <unistd.h>
@@ -53,7 +54,7 @@ char *get_content(char *file_path){
         puts("Not enough space");
         exit(-1);
     }
-    while (fread(my_string, sizeof(char), size/2, fp) == size/2){
+    while (fread(my_string, sizeof(char), size, fp) == size){
 
     }
     fclose(fp);
@@ -91,15 +92,26 @@ void reload_battery(Battery_stat my_battery){
 void free_bat(Battery_stat my_battery){
     free(my_battery);
 }
-
     //os.environ['DBUS_SESSION_BUS_ADDRESS'] = "unix:path=/run/dbus/system_bus_socket"
     //os.environ["DISPLAY"] = ":0"
     
-void notify(char *text){
+//Level = urgency 1 to 3. 3 being the most urgent
+void notify(char *text, int level){
     system("systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK");
     //char notify[] = "notify-send";
     //putenv("DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket");
-    char notify[] = "notify-send -t 2000";
+    char notify[50];
+    if (level == 1){
+        strcpy(notify, "notify-send -t 2000 -u low");
+    }
+
+    else if (level == 2){
+        strcpy(notify, "notify-send -t 2000 -u normal");
+    }
+
+    else if (level == 3){
+        strcpy(notify, "notify-send -t 2000 -u critical");
+    }
     char *notify_string = malloc(sizeof(char) * (strlen(notify) + strlen(text) + 1 + 1));
     notify_string[0] = 0;
     strcat(notify_string, notify);
@@ -110,6 +122,15 @@ void notify(char *text){
     free(notify_string);
 }
 
+//https://stackoverflow.com/questions/230062/whats-the-best-way-to-check-if-a-file-exists-in-c
+int exists(char *path){
+    FILE *file;
+    if ((file = fopen(path, "r"))){
+        fclose(file);
+        return 1;
+    }
+    return 0;
+}
 
 int main(){
     Battery_stat my_battery = init_battery();
@@ -117,28 +138,49 @@ int main(){
     char str[5];
 
     reload_battery(my_battery);
-    char status[20];
-    strcpy(status, my_battery->status);
-    int level = my_battery->battery_level;
-
-    while(1){
-        reload_battery(my_battery);
-        if (my_battery->battery_level < 10){
-
-        }
-        else if (strcmp(my_battery->status, status) != 0){
-            int length = snprintf(NULL, 0, "%d", my_battery->battery_level);
-            snprintf( str, length + 1 , "%d", my_battery->battery_level);
-
-            notify(my_battery->status);
-            notify(str);
-            strcpy(status, my_battery->status);
-            level = my_battery->battery_level;
-        }
-
-        sleep(1);
+    char *status = "to init for no error";
+    char *bat_path = "/tmp/battery_status";
+    if (exists(bat_path)){
+        status = get_content(bat_path);
+        rstrip(status);
     }
+    else {
+        char command[100] = "echo ";
+        strcat(command, my_battery->status);
+        strcat(command, " > ");
+        strcat(command, bat_path);
+        system(command);
+        exit(1);
+    }
+
+
+    int length = snprintf(NULL, 0, "%d", my_battery->battery_level);
+    snprintf( str, length + 1 , "%d", my_battery->battery_level);
+
+    if (my_battery->battery_level < 10){
+        notify(my_battery->status, 3);
+        notify(str, 3);
+        //TODO:battery preserve
+    }
+
+    //Notify when plug or unpluged
+
+    puts(my_battery->status);
+    puts(status);
+    if (strcmp(my_battery->status, status) != 0){
+        notify(my_battery->status, 1);
+        notify(str, 1);
+        
+        //Note the changes to /tmp/battery_status
+        char command[100] = "echo ";
+        strcat(command, my_battery->status);
+        strcat(command, " > ");
+        strcat(command, bat_path);
+        system(command);
+    }
+
     free_bat(my_battery);
+    free(status);
     
     return 0;
 }

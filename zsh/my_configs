@@ -22,5 +22,9 @@ do
 done
 
 alias vim="nvim -u $HOME/.vimrc"
+#alias sleep="echo mem | sudo tee /sys/power/state"
 export EDITOR=nvim
 ZVM_VI_INSERT_ESCAPE_BINDKEY=jj
+
+#For systemd services
+#echo "DBUS_SESSION_BUS_ADDRESS=$(echo $DBUS_SESSION_BUS_ADDRESS | cut -d "," -f 1)" > $HOME/.my_env

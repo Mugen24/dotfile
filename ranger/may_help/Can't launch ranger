@@ -1,0 +1,313 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>Setting terminal to launch .desktop with GIO - Hacking Life</title>
+    <meta name="description" content="When learning about Gemini today, I clicked on a gemini:// link, set my Firefox open-with preference to a command line client and clicked “Open link”, but nothing happened.">
+    <meta name="author" content="xdavidwu">
+    <meta property="article:author" content="xdavidwu">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Hacking Life">
+    <meta property="og:title" content="Setting terminal to launch .desktop with GIO">
+    <meta property="og:url" content="https://xdavidwu.link/gtk/gio-launch-set-terminal/">
+    <meta property="og:description" content="When learning about Gemini today, I clicked on a gemini:// link, set my Firefox open-with preference to a command line client and clicked “Open link”, but nothing happened.">
+    <meta property="article:published_time" content="2020-09-28T00:00:00+08:00">
+    <link rel="canonical" href="https://xdavidwu.link/gtk/gio-launch-set-terminal/">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+
+          "@type": "Person",
+          "name": "xdavidwu",
+          "url": "https://xdavidwu.link/"
+
+      }
+    </script>
+    <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Feed">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+      document.documentElement.className = '';
+    </script>
+    <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
+    <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/fork-awesome.min.css">
+  </head>
+  <body class="layout--single">
+    <nav class="skip-links">
+      <h2 class="screen-reader-text">Skip links</h2>
+      <ul>
+        <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+        <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+        <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+      </ul>
+    </nav>
+    <!--[if IE]>
+      <div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://www.mozilla.org/firefox/new/">upgrade your browser</a> to improve your experience.</div>
+    <![endif]-->
+    <input type="checkbox" class="no-print" id="darkmode">
+    <input type="checkbox" class="no-print" id="lightmode">
+    <div>
+      <div class="top-flex">
+        <label for="darkmode">
+          <i class="fa fa-moon-o"></i>
+        </label>
+        <label for="lightmode">
+          <i class="fa fa-sun-o"></i>
+        </label>
+        <nav id="site-nav" class="greedy-nav">
+          <a class="site-title" href="/">
+            Hacking Life
+          </a>
+          <ul class="visible-links">
+            <li>
+              <a href="/about/">About</a>
+            </li>
+            <li>
+              <a href="/categories/">Categories</a>
+            </li>
+            <li>
+              <a href="/tags/">Tags</a>
+            </li>
+          </ul>
+          <button class="search__toggle" type="button">
+            <span class="visually-hidden">Toggle search</span>
+            <i class="icon fa fa-fw fa-search"></i>
+          </button>
+          <button class="greedy-nav__toggle hidden" type="button">
+            <span class="visually-hidden">Toggle menu</span>
+            <div class="navicon"></div>
+          </button>
+          <ul class="hidden-links hidden"></ul>
+        </nav>
+        <div class="initial-content">
+          <div id="main" role="main">
+            <div class="sidebar sticky">
+              <div itemscope itemtype="https://schema.org/Person">
+                <div class="author__avatar">
+                  <a href="/about/">
+                    <img src="/assets/img/avatar.jpg" alt="xdavidwu" itemprop="image">
+                  </a>
+                </div>
+                <div class="author__content">
+                  <a href="/about/">
+                    <h3 class="author__name" itemprop="name">xdavidwu</h3>
+                  </a>
+                  <div class="author__bio" itemprop="description">
+                  </div>
+                </div>
+                <div class="author__urls-wrapper">
+                  <input type="checkbox" id="follow-button" autocomplete="off">
+                  <label for="follow-button" class="btn btn--primary">Follow</label>
+                  <ul class="author__urls social-icons">
+                    <li><a href="mailto:xdavidwuph@gmail.com" rel="noopener noreferrer"><i class="fa fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+                    <li><a href="/pgp-public-key.txt" rel="noopener noreferrer"><i class="fa fa-fw fa-lock" aria-hidden="true"></i><span class="label">PGP</span></a></li>
+                    <li><a href="https://git.xdavidwu.link/~xdavidwu/" rel="noopener noreferrer"><i class="fa fa-fw fa-circle-thin" aria-hidden="true"></i><span class="label">SourceHut</span></a></li>
+                    <li><a href="https://gitlab.xdavidwu.link/xdavidwu/" rel="noopener noreferrer"><i class="fa fa-fw fa-gitlab" aria-hidden="true"></i><span class="label">GitLab</span></a></li>
+                    <li><a href="https://github.com/xdavidwu/" rel="noopener noreferrer"><i class="fa fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+                    <li><a href="https://matrix.to/#/@xdavidwu:xdavidwu.link" rel="noopener noreferrer"><i class="fa fa-fw fa-matrix-org" aria-hidden="true"></i><span class="label">Matrix</span></a></li>
+                    <li><a href="https://pleroma.xdavidwu.link/xdavidwu" rel="noopener noreferrer"><i class="fa fa-fw fa-pleroma" aria-hidden="true"></i><span class="label">Pleroma</span></a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+              <meta itemprop="headline" content="Setting terminal to launch .desktop with GIO">
+              <meta itemprop="description" content="When learning about Gemini today, I clicked on a gemini:// link, set my Firefox open-with preference to a command line client and clicked “Open link”, but nothing happened.">
+              <meta itemprop="datePublished" content="2020-09-28T00:00:00+08:00">
+              <div class="page__inner-wrap">
+                <header>
+                  <h1 id="page-title" class="page__title" itemprop="headline">Setting terminal to launch .desktop with GIO
+                  </h1>
+                  <p class="page__meta">
+                    <span class="page__meta-readtime">
+                      <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
+                      1 minute read
+                    </span>
+                  </p>
+                </header>
+                <section class="page__content" itemprop="text">
+                  <p>When learning about Gemini today, I clicked on a <code class="language-plaintext highlighter-rouge">gemini://</code> link, set my Firefox open-with preference to a command line client and clicked “Open link”, but nothing happened.</p>
+                  <p>Searching for a way to launch a <code class="language-plaintext highlighter-rouge">.desktop</code> by command line, hoping for better debugging experience, I got <code class="language-plaintext highlighter-rouge">gtk-launch &lt;.desktop name&gt;</code>. With that name I assumed there was a GTK or GLib or G-something way to launch <code class="language-plaintext highlighter-rouge">.desktop</code> and Firefox was likely also using it. Using that command, again, no new terminal was launched but at least there was a line by shell spawned by gtk-launch complaining xterm not found.</p>
+                  <p>A quick search about how to set terminal to use with gtk-launch returned nothing but old and unanswered StackOverflow threads. Time to read the source. I’ve looked into GTK and GLib a little bit before, quite readable, so it should not be hard for me.</p>
+                  <p>In <code class="language-plaintext highlighter-rouge">gtk/gtk-launch.c</code> I found this:</p>
+                  <div class="language-c highlighter-rouge">
+                    <div class="highlight">
+                      <pre class="highlight"><code>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">g_app_info_launch</span> <span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">launch_context</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">error</span><span class="p">))</span>
+</code></pre>
+                    </div>
+                  </div>
+                  <p>A G-something way, as I guessed.</p>
+                  <p>Searching for <code class="language-plaintext highlighter-rouge">g_app_info_launch</code> brought me to GIO, a part of GLib. Within that function I saw this:</p>
+                  <div class="language-c highlighter-rouge">
+                    <div class="highlight">
+                      <pre class="highlight"><code>  <span class="k">return</span> <span class="p">(</span><span class="o">*</span> <span class="n">iface</span><span class="o">-&gt;</span><span class="n">launch</span><span class="p">)</span> <span class="p">(</span><span class="n">appinfo</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">launch_context</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
+</code></pre>
+                    </div>
+                  </div>
+                  <p>Looked like <code class="language-plaintext highlighter-rouge">GAppInfo</code> was an interface and I needed to dig into the used implementation.</p>
+                  <p>Back to gtk-launch, looking at what <code class="language-plaintext highlighter-rouge">info</code> variable was:</p>
+                  <div class="language-c highlighter-rouge">
+                    <div class="highlight">
+                      <pre class="highlight"><code>  <span class="n">info</span> <span class="o">=</span> <span class="n">G_APP_INFO</span> <span class="p">(</span><span class="n">g_desktop_app_info_new</span> <span class="p">(</span><span class="n">desktop_file_name</span><span class="p">));</span>
+</code></pre>
+                    </div>
+                  </div>
+                  <p>GDesktopAppInfo it was.</p>
+                  <p>In GDesktopAppInfo, digging into functions, I found out that it would use either <code class="language-plaintext highlighter-rouge">g_desktop_app_info_launch_uris_with_dbus</code> or <code class="language-plaintext highlighter-rouge">g_desktop_app_info_launch_uris_with_spawn</code>. The <code class="language-plaintext highlighter-rouge">*_with_spawn</code> one sounded simpler. Assuming those two ways would not differ to much in finding terminal emulators to use, I looked into that one and saw:</p>
+                  <div class="language-c highlighter-rouge">
+                    <div class="highlight">
+                      <pre class="highlight"><code>      <span class="k">if</span> <span class="p">(</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">terminal</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">prepend_terminal_to_vector</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">))</span>
+</code></pre>
+                    </div>
+                  </div>
+                  <p><code class="language-plaintext highlighter-rouge">prepend_terminal_to_vector</code> was the routine for finding terminal emulators. It found within a few hard-coded names and fallback to <code class="language-plaintext highlighter-rouge">xterm</code> . There were <code class="language-plaintext highlighter-rouge">gnome-terminal</code>, <code class="language-plaintext highlighter-rouge">mate-terminal</code>, <code class="language-plaintext highlighter-rouge">xfce4-terminal</code>, <code class="language-plaintext highlighter-rouge">nxterm</code>, <code class="language-plaintext highlighter-rouge">color-xterm</code>, <code class="language-plaintext highlighter-rouge">rxvt</code>, <code class="language-plaintext highlighter-rouge">dtterm</code> and finally <code class="language-plaintext highlighter-rouge">xterm</code>. The one I used was not on the list.</p>
+                  <p>As I will likely not install xterm on my machine, I created an xterm link to my terminal and problem solved. gtk-launch and Firefox now launch command line tools successfully.</p>
+                </section>
+                <footer class="page__meta">
+                  <p class="page__taxonomy">
+                    <strong><i class="fa fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+                    <span itemprop="keywords">
+                      <a href="/tags/#en" class="page__taxonomy-item" rel="tag">en</a><span class="sep">, </span>
+                      <a href="/tags/#gtk" class="page__taxonomy-item" rel="tag">gtk</a><span class="sep">, </span>
+                      <a href="/tags/#linux" class="page__taxonomy-item" rel="tag">linux</a>
+                    </span>
+                  </p>
+                  <p class="page__taxonomy">
+                    <strong><i class="fa fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+                    <span itemprop="keywords">
+                      <a href="/categories/#gtk" class="page__taxonomy-item" rel="tag">GTK</a>
+                    </span>
+                  </p>
+                  <p class="page__date"><strong><i class="fa fa-fw fa-calendar-o" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-09-28T00:00:00+08:00">September 28, 2020</time></p>
+                </footer>
+                <section class="page__share">
+                  <h4 class="page__share-title">Share on</h4>
+                  <a href="https://twitter.com/intent/tweet?text=Setting+terminal+to+launch+.desktop+with+GIO%20https%3A%2F%2Fxdavidwu.link%2Fgtk%2Fgio-launch-set-terminal%2F" class="btn btn--twitter" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+                  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fxdavidwu.link%2Fgtk%2Fgio-launch-set-terminal%2F" class="btn btn--facebook" rel="noopener" target="_blank"><i class="fa fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+                  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fxdavidwu.link%2Fgtk%2Fgio-launch-set-terminal%2F" class="btn btn--linkedin" rel="noopener" target="_blank"><i class="fa fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+                </section>
+                <nav class="pagination">
+                  <a href="/misc/english-post/" class="pagination--pager">
+                    <i class="fa fa-angle-left"></i> Posts in English
+                  </a>
+                  <a href="/misc/gemini-support/" class="pagination--pager right">
+                    Gemini support
+                    <i class="fa fa-angle-right"></i>
+                  </a>
+                </nav>
+                <div class="page__comments">
+                  <h4 class="page__comments-title">Comments on Matrix <a href="matrix:r/comments_xdavidwu.link_%2Fgtk%2Fgio-launch-set-terminal%2F:xdavidwu.link">#comments_xdavidwu.link_/gtk/gio-launch-set-terminal/:xdavidwu.link</a></h4>
+                  <div id="comment-section"></div>
+                </div>
+                <div class="page__related">
+                  <h4 class="page__related-title">You may also enjoy</h4>
+                  <div class="grid__wrapper">
+                    <article class="grid__item archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+                      <h2 class="archive__item-title no_toc" itemprop="headline">
+                        <a href="/linux/choosing-distro/">Chosing Linux distribution
+                        </a>
+                      </h2>
+                      <p class="page__meta">
+                        <span class="page__meta-readtime">
+                          <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
+                          4 minute read
+                        </span>
+                      </p>
+                      <p class="archive__item-excerpt" itemprop="description">I had been looking into using Alpine Linux as my daily driver for a long time, and just switched ...</p>
+                    </article>
+                    <article class="grid__item archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+                      <h2 class="archive__item-title no_toc" itemprop="headline">
+                        <a href="/misc/matrix-comments/">Matrix-powered comments on this site
+                        </a>
+                      </h2>
+                      <p class="page__meta">
+                        <span class="page__meta-readtime">
+                          <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
+                          3 minute read
+                        </span>
+                      </p>
+                      <p class="archive__item-excerpt" itemprop="description">I have changed the commenting platform from Disqus to one based on Matrix.
+                      </p>
+                    </article>
+                    <article class="grid__item archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+                      <h2 class="archive__item-title no_toc" itemprop="headline">
+                        <a href="/kubernetes/kubeadm-psp/">Kubeadm cluster with PodSecurityPolicy
+                        </a>
+                      </h2>
+                      <p class="page__meta">
+                        <span class="page__meta-readtime">
+                          <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
+                          less than 1 minute read
+                        </span>
+                      </p>
+                      <p class="archive__item-excerpt" itemprop="description">After enabling PodSecurityPolicy admission controller in a kubeadm cluster, one might forget to c...</p>
+                    </article>
+                    <article class="grid__item archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+                      <h2 class="archive__item-title no_toc" itemprop="headline">
+                        <a href="/container/kaniko-mtab/">Creating an OS image with Kaniko
+                        </a>
+                      </h2>
+                      <p class="page__meta">
+                        <span class="page__meta-readtime">
+                          <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
+                          less than 1 minute read
+                        </span>
+                      </p>
+                      <p class="archive__item-excerpt" itemprop="description">It is common to create an OS image with a Containerfile like following:
+                      </p>
+                    </article>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="search-content">
+          <form class="search-content__form" onkeydown="return event.key != 'Enter';">
+            <label class="sr-only" for="search">
+              Enter your search term...
+            </label>
+            <input type="search" id="search" class="search-input" tabindex="-1" autocomplete="off" placeholder="Enter your search term..." />
+          </form>
+          <div id="results" class="results"></div>
+        </div>
+        <div id="footer" class="page__footer">
+          <footer>
+            <div class="page__footer-follow">
+              <ul class="social-icons">
+                <li><a href="https://git.xdavidwu.link/~xdavidwu/xdavidwu.link" rel="noopener noreferrer"><i class="fa fa-fw fa-circle-thin" aria-hidden="true"></i>Source code</a></li>
+                <li><a href="/feed.xml" rel="noopener noreferrer"><i class="fa fa-fw fa-rss-square" aria-hidden="true"></i>Feed</a></li>
+                <li><a href="#" rel="noopener noreferrer"><i class="fa fa-fw fa-angle-double-up" aria-hidden="true"></i>Back to top</a></li>
+              </ul>
+            </div>
+            <div class="page__footer-copyright">&copy; 2018-2022 xdavidwu. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a>. Based on <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.<br>
+              Content is <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA</a>. Code is <a href="https://git.xdavidwu.link/~xdavidwu/xdavidwu.link/tree/master/item/LICENSE">MIT</a>.</div>
+          </footer>
+        </div>
+      </div>
+    </div>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/nav.js"></script>
+    <script src="/assets/js/lunr/lunr.min.js"></script>
+    <script src="/assets/js/lunr/lunr-store.js"></script>
+    <script src="/assets/js/lunr/lunr-en.js"></script>
+    <script>
+      initComments({
+        node: document.getElementById('comment-section'),
+        defaultHomeserverUrl: 'https://matrix-client.matrix.org',
+        serverName: 'xdavidwu.link',
+        siteName: 'xdavidwu.link',
+        commentSectionId: '/gtk/gio-launch-set-terminal/',
+        guestPostingEnabled: false,
+      })
+    </script>
+  </body>
+</html>
