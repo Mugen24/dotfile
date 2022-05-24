@@ -158,9 +158,26 @@ config.bind('L', 'forward', mode = mode)
 config.bind('b', 'set-cmd-text -s :bookmark-load', mode = mode)
 config.bind('<Control+b>', 'bookmark-list', mode = mode)
 config.bind('B', 'set-cmd-text -s :bookmark-load -t', mode = mode)
+config.bind('<<', 'tab-move -', mode = mode)
+config.bind('>>', 'tab-move +', mode = mode)
+config.bind('<Control+p>', 'tab-pin ;; tab-move start', mode = mode)
 
 config.bind(',m', 'spawn mpv {url}')
 config.bind(',M', 'hint links spawn mpv {hint-url}')
 
 config.set('content.javascript.can_access_clipboard' , True)
+
+'''
+#copy : y~
+'''
+config.bind('yf', 'hint links yank')
 #c.content.javascript.can_access_clipboard = True
+c.tabs.last_close = "startpage"
+c.content.tls.certificate_errors = "ask-block-thirdparty"
+c.session.lazy_restore = True
+
+#c.url_searchengines = "https://google.com/?q={}"
+c.url.searchengines = {"DEFAULT": "https://google.com/?q={}"}
+c.url.start_pages = "https://google.com"
+c.editor.command = ['alacritty', '-e', 'nvim', '-u', '~/.vimrc', '{file}']
+

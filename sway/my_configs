@@ -22,7 +22,7 @@ bindsym Control+j exec "sway_focus down"
 bindsym Control+k exec "sway_focus up"
 bindsym Control+l exec "sway_focus right"
 unbindsym $mod+d
-bindsym $mod+d exec "wofi --show drun"
+bindsym $mod+d exec "rofi -show drun -terminal alacritty"
 
 font pango:SourceCodePro Medium 10
 
@@ -78,3 +78,70 @@ exec rm -f $WOBSOCK && mkfifo $WOBSOCK && tail -f $WOBSOCK | wob
 exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
 
 exec_always --no-startup-id $HOME/dotfile/sway/test
+
+
+#-------------------------Application------------------------
+unbindsym $mod+r
+bindsym $mod+r exec alacritty -e ranger
+
+bindsym $mod+c exec alacritty -t Cmus -e cmus
+
+
+bindsym XF86AudioPlay exec playerctl --player=cmus play-pause
+bindsym XF86AudioNext exec playerctl --player=cmus next
+bindsym XF86AudioPrev exec playerctl --player=cmus previous
+
+assign [title="Cmus"] 9
+#-------------------------Scratchpad------------------------
+set $scratchpad Save application: mod+shift+[n]umber; load: mod+[n]umber
+bindsym $mod+p mode "$scratchpad"
+
+bindsym Control+Shift+1 mark "alpha", move scratchpad
+bindsym Control+1 [con_mark="alpha"], scratchpad show
+
+mode "$scratchpad" {
+    bindsym $mod+t floating toggle
+    bindsym $mod+Shift+1 mark "1", move scratchpad
+    bindsym $mod+1 [con_mark="1"], scratchpad show
+    bindsym $mod+Shift+2 mark "2", move scratchpad
+    bindsym $mod+2 [con_mark="2"], scratchpad show
+    bindsym $mod+Shift+3 mark "3", move scratchpad
+    bindsym $mod+3 [con_mark="3"], scratchpad show
+    bindsym $mod+Shift+4 mark "4", move scratchpad
+    bindsym $mod+4 [con_mark="4"], scratchpad show
+    bindsym $mod+Shift+5 mark "5", move scratchpad
+    bindsym $mod+5 [con_mark="5"], scratchpad show
+    bindsym $mod+Shift+6 mark "6", move scratchpad
+    bindsym $mod+6 [con_mark="6"], scratchpad show
+    bindsym $mod+Shift+7 mark "7", move scratchpad
+    bindsym $mod+7 [con_mark="7"], scratchpad show
+    bindsym $mod+Shift+8 mark "8", move scratchpad
+    bindsym $mod+8 [con_mark="8"], scratchpad show
+    bindsym $mod+Shift+9 mark "9", move scratchpad
+    bindsym $mod+9 [con_mark="9"], scratchpad show
+    bindsym Escape mode "default"
+    bindsym Return mode "default"
+}
+
+#
+# Set pomodoro timer
+#
+exec ~/dotfile/sway/pomo/pomo.sh start 
+exec ~/dotfile/sway/pomo/pomo.sh notify &
+
+set $pomodoro Pomo: [s]tart [p]ause [st]op [r]estart
+bindsym m+p mode "$pomodoro"
+
+mode "$pomodoro" {
+    bindsym Escape mode "default"
+    bindsym Return mode "default"
+    bindsym s exec ~/dotfile/sway/pomo/pomo.sh start; mode "default" 
+    bindsym p exec ~/dotfile/sway/pomo/pomo.sh pause; mode "default" 
+    bindsym s+t exec ~/dotfile/sway/pomo/pomo.sh stop; mode "default"
+    bindsym r exec ~/dotfile/sway/pomo/pomo.sh restart; mode "default"
+}
+
+bar {
+    position top
+    status_command while ~/dotfile/sway/statusbar.sh; do sleep 1; done
+}

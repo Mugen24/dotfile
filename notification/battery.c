@@ -158,9 +158,10 @@ int main(){
     snprintf( str, length + 1 , "%d", my_battery->battery_level);
 
     if (my_battery->battery_level < 10){
-        notify(my_battery->status, 3);
-        notify(str, 3);
-        //TODO:battery preserve
+        if (strcmp(my_battery->status, "Discharging") == 0){
+            notify(my_battery->status, 3);
+            notify(str, 3);
+        }
     }
 
     //Notify when plug or unpluged

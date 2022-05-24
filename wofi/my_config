@@ -1,0 +1,6 @@
+allow_images=true
+term=alacritty -e
+mode=drun,run
+insensitive=false
+gtk_dark=true
+always_parse_args=true
