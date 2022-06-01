@@ -71,6 +71,7 @@ gaps outer 3
 output "*" bg ../$theme/wallpapers/tokyo_areial.jpg fill
 
 
+bindsym comma+b exec ~/dotfile/sway/auto_bluetooth
 #-------------------------Plugin------------------------
 set $WOBSOCK $XDG_RUNTIME_DIR/wob.sock
 exec rm -f $WOBSOCK && mkfifo $WOBSOCK && tail -f $WOBSOCK | wob
@@ -98,6 +99,7 @@ bindsym $mod+p mode "$scratchpad"
 
 bindsym Control+Shift+1 mark "alpha", move scratchpad
 bindsym Control+1 [con_mark="alpha"], scratchpad show
+bindsym $mod+t floating toggle
 
 mode "$scratchpad" {
     bindsym $mod+t floating toggle
@@ -126,10 +128,10 @@ mode "$scratchpad" {
 #
 # Set pomodoro timer
 #
-exec ~/dotfile/sway/pomo/pomo.sh start 
+#exec ~/dotfile/sway/pomo/pomo.sh start 
 exec ~/dotfile/sway/pomo/pomo.sh notify &
 
-set $pomodoro Pomo: [s]tart [p]ause [st]op [r]estart
+set $pomodoro Pomo: [s]tart [p]ause s[t]op [r]estart
 bindsym m+p mode "$pomodoro"
 
 mode "$pomodoro" {
@@ -137,7 +139,7 @@ mode "$pomodoro" {
     bindsym Return mode "default"
     bindsym s exec ~/dotfile/sway/pomo/pomo.sh start; mode "default" 
     bindsym p exec ~/dotfile/sway/pomo/pomo.sh pause; mode "default" 
-    bindsym s+t exec ~/dotfile/sway/pomo/pomo.sh stop; mode "default"
+    bindsym t exec ~/dotfile/sway/pomo/pomo.sh stop; mode "default"
     bindsym r exec ~/dotfile/sway/pomo/pomo.sh restart; mode "default"
 }
 

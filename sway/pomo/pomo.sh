@@ -206,6 +206,9 @@ function send_msg {
         osascript -e "tell app \"System Events\" to display dialog \"${1}\"" &> /dev/null
     elif command -v notify-send &> /dev/null; then
         notify-send -a "Pomodoro" "${1}"
+        if command -v mpv; then
+            mpv -- "/usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga"
+        fi
     else
         echo "${1}"
     fi
