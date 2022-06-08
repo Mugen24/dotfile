@@ -1,0 +1,26 @@
+#!/bin/bash
+link=$QUTE_URL
+
+function is_video () {
+    match_state=$(echo $1 | grep -E 'watch\?v=(\w|\W){11}')
+    if [[ ${#match_state} -gt 0 ]] 
+    then
+        echo 1
+    else 
+        echo 0
+    fi 
+}
+
+video=$(is_video $QUTE_URL)
+#echo "message-info '${QUTE_URL}'" >> $QUTE_FIFO
+#echo "message-info '${video}'" >> $QUTE_FIFO
+
+
+if [[ $video -eq 1 ]]
+then
+    echo "spawn mpv ${QUTE_URL}" >> $QUTE_FIFO
+    echo "message-info 'Opening ${QUTE_URL}'" >> $QUTE_FIFO
+else 
+    echo "open ${QUTE_URL}" >> $QUTE_FIFO
+fi
+

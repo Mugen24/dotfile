@@ -151,8 +151,8 @@ config.bind('<Space>', 'set-cmd-text /', mode = 'normal')
 config.bind('p', 'open -- {clipboard}', mode = 'normal')
 config.bind('P', 'open --bg {clipboard}', mode = 'normal')
 #conflict with sway window focus
-config.unbind('<Control+h>', mode = 'normal')
-config.bind('h', 'history -t', mode = mode)
+#Conflict with sway
+#config.bind('<Control+h>', 'history -t', mode = 'normal')
 config.bind('H', 'back', mode = mode)
 config.bind('L', 'forward', mode = mode)
 config.bind('b', 'set-cmd-text -s :bookmark-load', mode = mode)
@@ -166,6 +166,9 @@ config.bind(',m', 'spawn mpv {url}')
 config.bind(',M', 'hint links spawn mpv {hint-url}')
 
 config.set('content.javascript.can_access_clipboard' , True)
+
+config.bind(",b", "hint links tab", mode = mode)
+#/home/Mugen/dotfile/qutebrowser/plugins/youtube_mpv")
 
 '''
 #copy : y~
@@ -181,3 +184,16 @@ c.url.searchengines = {"DEFAULT": "https://google.com/?q={}"}
 c.url.start_pages = "https://google.com"
 c.editor.command = ['alacritty', '-e', 'nvim', '-u', '~/.vimrc', '{file}']
 
+
+config.unbind("f")
+#config.bind("f", "hint links")
+config.bind("f", "hint links userscript /home/Mugen/dotfile/qutebrowser/plugins/youtube_mpv")
+config.bind("f", "hint links userscript /home/Mugen/dotfile/qutebrowser/plugins/youtube_mpv")
+
+config.unbind("m")
+config.unbind("M")
+config.bind("mq", "quickmark-save", mode=mode)
+config.bind("mb", "bookmark-add -t", mode=mode)
+#had to be underscore instead of -
+config.bind("mm", "mode-enter set_mark", mode=mode)
+config.bind("`", "mode-enter jump_mark", mode=mode)

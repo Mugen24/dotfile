@@ -1,12 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 if [[ $(bluetoothctl show | grep Powered |cut -d " " -f 2) == yes ]]
 then
-    notify-send "Disconnecting"
     bluetoothctl power off
-    pactl set-sink-volume @DEFAULT_SINK@ 10%
-
 else
-    notify-send "Connecting"
     bluetoothctl power on
     for device in "$(bluetoothctl devices)"
     do
